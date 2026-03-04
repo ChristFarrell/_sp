@@ -30,14 +30,14 @@ Link for AI
     sprintf(quads[jmp_f_idx].result, "%d", quad_count);
     ```
 
-Simply, the process can be work as like this:
-- Initialization: i = 1 and sum = 0.
-- Check Condition: Is i (1) < 11? Yes (True).
-- Loop Content: * sum = sum + i (sum becomes 1).
-- i = i + 1 (i becomes 2).
-- Jump Back (Line 012): Return to line 004.
+    Simply, the process can be work as like this:
+    a. Initialization: i = 1 and sum = 0.
+    b. Check Condition: Is i (1) < 11? Yes (True).
+    c. Loop Content: * sum = sum + i (sum becomes 1).
+    d. i = i + 1 (i becomes 2).
+    e. Jump Back (Line 012): Return to line 004.
 
-Repeat Process: This occurs until i is 10. At that point, sum will add 1+2+3...+10 = 55.<br>
-False Condition: When i becomes 11, line 005 (CMP_LT) will return 0 (False). Line 006 (JMP_F) then sees the 0 and jumps to the end of the program.
+    Repeat Process: This occurs until i is 10. At that point, sum will add 1+2+3...+10 = 55.<br>
+    False Condition: When i becomes 11, line 005 (CMP_LT) will return 0 (False). Line 006 (JMP_F) then sees the 0 and jumps to the end of the program.
 
 2. 
