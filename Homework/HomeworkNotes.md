@@ -7,12 +7,12 @@ Link for AI
 
 1. To understanding while process, the compiler will read the code (parser) and execute the code inside of virtual machine. The process is described in several ways:
     - The parser stores the line number just before the while condition is checked.
-    ```
+    ```c
     int start_pc = quad_count;
     ```
 
-    - The program checks to see if the condition of the while loop is met. If it's False, it should know how to exit. This
-    ```
+    - The program checks to see if the condition of the while loop is met. If it's False, it should know how to exit.
+    ```c
     char cond[32]; expression(cond);
     next_token(); next_token(); 
         
@@ -25,7 +25,7 @@ Link for AI
     ```
 
     - Working as Backpatching, which provides a exit program to complete the program.
-    ```
+    ```c
     next_token(); 
     sprintf(quads[jmp_f_idx].result, "%d", quad_count);
     ```
