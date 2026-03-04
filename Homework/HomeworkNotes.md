@@ -6,29 +6,30 @@ This homework was getting helped by AI for help understanding.<br>
 Link for AI
 
 1. To understanding while process, the compiler will read the code (parser) and execute the code inside of virtual machine. The process is described in several ways:
-- The parser stores the line number just before the while condition is checked.
-```
-int start_pc = quad_count;
-```
+    - The parser stores the line number just before the while condition is checked.
+    ```
+    int start_pc = quad_count;
+    ```
 
-- The program checks to see if the condition of the while loop is met. If it's False, it should know how to exit. This
-```
-char cond[32]; expression(cond);
-next_token(); next_token(); 
+    - The program checks to see if the condition of the while loop is met. If it's False, it should know how to exit. This
+    ```
+    char cond[32]; expression(cond);
+    next_token(); next_token(); 
         
-int jmp_f_idx = quad_count;
-emit("JMP_F", cond, "-", "?");
-while (cur_token.type != TK_RBRACE) statement();
+    int jmp_f_idx = quad_count;
+    emit("JMP_F", cond, "-", "?");
+    while (cur_token.type != TK_RBRACE) statement();
 
-char target_addr[10]; sprintf(target_addr, "%d", start_pc);
-emit("JMP", "-", "-", target_addr); 
-```
+    char target_addr[10]; sprintf(target_addr, "%d", start_pc);
+    emit("JMP", "-", "-", target_addr); 
+    ```
 
-- Working as Backpatching, which provides a exit program to complete the program.
-```
-next_token(); 
-sprintf(quads[jmp_f_idx].result, "%d", quad_count);
-```
+    - Working as Backpatching, which provides a exit program to complete the program.
+    ```
+    next_token(); 
+    sprintf(quads[jmp_f_idx].result, "%d", quad_count);
+    ```
+
 Simply, the process can be work as like this:
 - Initialization: i = 1 and sum = 0.
 - Check Condition: Is i (1) < 11? Yes (True).
