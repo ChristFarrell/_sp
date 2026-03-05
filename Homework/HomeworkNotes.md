@@ -40,4 +40,12 @@ Link for AI
     Repeat Process: This occurs until i is 10. At that point, sum will add 1+2+3...+10 = 55.<br>
     False Condition: When i becomes 11, line 005 (CMP_LT) will return 0 (False). Line 006 (JMP_F) then sees the 0 and jumps to the end of the program.
 
-2. 
+2. Inside of the compilers itself, it have diferent division that help to run the code inside of VM Translator. 
+    - Lexical Analysis is responsible for reading raw files character by character and converting them into tokens (while, if, etc).
+    - Syntax Analysis helps organize the logical structure of the code.
+    - Intermediate code generation records instructions in quadruples format (4-part instructions: Op, Arg1, Arg2, Result).
+    - Inside virtual machine, it will be tasked to executing the code.
+    
+    In the p0 file, there are examples of VMTranslator usage. These include add.p0 (a mathematical operation), if.p0 (checking a condition in a code), while.p0 (asking the code to repeat the program), fact.p0 (calculating factorial), and prime.p0 (checking for prime numbers).
+
+## [Homework 2]()
