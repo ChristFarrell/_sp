@@ -3,7 +3,7 @@
 ## [Homework 1](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%201%20040325)
 
 This homework was getting helped by AI for help understanding.<br>
-Link for AI
+Link for AI : https://gemini.google.com/share/22f7dfa4fb40
 
 1. To understanding while process, the compiler will read the code (parser) and execute the code inside of virtual machine. The process is described in several ways:
     - The parser stores the line number just before the while condition is checked.
