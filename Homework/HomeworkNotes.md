@@ -1,6 +1,6 @@
 # NOTES
 
-## [Homework 1](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%201%20040325)
+## [Homework 1](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%201%20040326)
 
 This homework was getting helped by AI for help understanding.<br>
 Link for AI : https://gemini.google.com/share/22f7dfa4fb40 <br>
