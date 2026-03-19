@@ -48,7 +48,7 @@ Link for AI : https://gemini.google.com/share/22f7dfa4fb40 <br>
     
     In the p0 file, there are examples of VMTranslator usage. These include add.p0 (a mathematical operation), if.p0 (checking a condition in a code), while.p0 (asking the code to repeat the program), fact.p0 (calculating factorial), and prime.p0 (checking for prime numbers).
 
-## [Homework 2]()
+## [Homework 2](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%202%20110326/petal-lang)
 
 This homework was getting helped by Opencode AI for help understanding.<br>
 
