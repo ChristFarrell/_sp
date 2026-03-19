@@ -1,0 +1,22 @@
+// Factorial and recursion demo in Petal
+fn factorial(n: int) -> int {
+    if n <= 1 {
+        return 1;
+    }
+    return n * factorial(n - 1);
+}
+
+fn is_even(n: int) -> bool {
+    return n % 2 == 0;
+}
+
+fn main() -> void {
+    let num: int = 5;
+    print("Factorial of " + str(num) + " is " + str(factorial(num)));
+    
+    if is_even(num) {
+        print(str(num) + " is even");
+    } else {
+        print(str(num) + " is odd");
+    }
+}

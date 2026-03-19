@@ -1,0 +1,38 @@
+// Logical Operators in Petal
+fn main() -> void {
+    let a: bool = true;
+    let b: bool = false;
+    
+    // AND
+    if a and true {
+        print("true and true = true");
+    }
+    
+    if a and b {
+        print("This won't print");
+    } else {
+        print("true and false = false");
+    }
+    
+    // OR
+    if a or b {
+        print("true or false = true");
+    }
+    
+    if b or b {
+        print("This won't print");
+    } else {
+        print("false or false = false");
+    }
+    
+    // NOT
+    if not b {
+        print("not false = true");
+    }
+    
+    if not a {
+        print("This won't print");
+    } else {
+        print("not true = false");
+    }
+}

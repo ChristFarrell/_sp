@@ -1,0 +1,30 @@
+// Basic Arithmetic Operations in Petal
+fn main() -> void {
+    let a: int = 10;
+    let b: int = 3;
+    
+    // Addition
+    let sum: int = a + b;
+    print("10 + 3 = ");
+    print(sum);
+    
+    // Subtraction
+    let diff: int = a - b;
+    print("10 - 3 = ");
+    print(diff);
+    
+    // Multiplication
+    let prod: int = a * b;
+    print("10 * 3 = ");
+    print(prod);
+    
+    // Division
+    let quot: int = a / b;
+    print("10 / 3 = ");
+    print(quot);
+    
+    // Modulo
+    let rem: int = a % b;
+    print("10 % 3 = ");
+    print(rem);
+}

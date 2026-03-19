@@ -1,0 +1,14 @@
+// String Operations in Petal
+fn main() -> void {
+    let first: str = "Hello";
+    let second: str = "World";
+    
+    let combined: str = first + " " + second;
+    print(combined);
+    
+    let name: str = "Petal";
+    print("Welcome to " + name + "!");
+    
+    let num: int = 42;
+    print("The answer is: " + str(num));
+}

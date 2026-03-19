@@ -1,0 +1,4 @@
+// Hello World in Petal
+fn main() -> void {
+    print("Hello, Petal World!");
+}

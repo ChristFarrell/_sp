@@ -1,0 +1,29 @@
+// Comparison Operators in Petal
+fn main() -> void {
+    let a: int = 10;
+    let b: int = 20;
+    
+    if a < b {
+        print("10 < 20: true");
+    }
+    
+    if a > 5 {
+        print("10 > 5: true");
+    }
+    
+    if a <= 10 {
+        print("10 <= 10: true");
+    }
+    
+    if b >= 20 {
+        print("20 >= 20: true");
+    }
+    
+    if a == 10 {
+        print("10 == 10: true");
+    }
+    
+    if a != b {
+        print("10 != 20: true");
+    }
+}

@@ -49,3 +49,52 @@ Link for AI : https://gemini.google.com/share/22f7dfa4fb40 <br>
     In the p0 file, there are examples of VMTranslator usage. These include add.p0 (a mathematical operation), if.p0 (checking a condition in a code), while.p0 (asking the code to repeat the program), fact.p0 (calculating factorial), and prime.p0 (checking for prime numbers).
 
 ## [Homework 2]()
+
+This homework was getting helped by Opencode AI for help understanding.<br>
+
+On this homework, we asked to make new progamming language. Petal Language is statically-typed and interpreted programming language implemented in Python. The installation was using of this code:
+```bash
+cd petal-lang
+```
+
+The feature and operators was used on this Petal Language
+- `int` - 64-bit integers
+- `float` - 64-bit floating point
+- `str` - Strings
+- `bool` - Boolean (true/false)
+- `void` - No return value
+- Arithmetic `+`, `-`, `*`, `/`, `%`
+- Comparison `==`, `!=`, `<`, `>`, `<=`, `>=`
+- Logical `and`, `or`, `not`
+
+The program itself worked by helping of tokenizer and parser python. The tokenizer converts source code into a stream of tokens using a simple character-by-character scanning approach. It handles:
+- Keywords (let, fn, if, else, while, return, and, or, not)
+- Identifiers and numbers (int, float)
+- Strings with escape sequences
+- Single-line comments (//)
+- Multi-character operators (==, !=, <=, >=, ->)
+
+The parser itself, is a recursive descent parser builds an Abstract Syntax Tree (AST) from the token stream. Supported syntax:
+- Variable declarations (let)
+- Function declarations (fn)
+- If/else/else-if statements
+- While loops
+- Return statements
+- Binary and unary expressions
+- Function calls
+
+Later on, the compiler traverses the AST and generates bytecode instructions for a stack-based virtual machine. As we also remember about last semester class, the Virtual Machine executes bytecode using a stack-based architecture with the following opcodes.
+| Opcode | Description |
+|--------|-------------|
+| CONSTANT | Push constant to stack |
+| LOAD_VAR | Load variable onto stack |
+| STORE_VAR | Store value from stack to variable |
+| ADD, SUB, MUL, DIV, MOD | Arithmetic operations |
+| NEG, NOT | Unary operations |
+| EQ, NE, LT, GT, LE, GE | Comparison operations |
+| AND, OR | Logical operations |
+| JUMP, JUMP_IF_FALSE | Control flow |
+| CALL, RETURN | Function calls |
+| HALT | Stop execution |
+
+## [Homework 3]()

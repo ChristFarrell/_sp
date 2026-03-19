@@ -1,0 +1,21 @@
+// Float Arithmetic in Petal
+fn main() -> void {
+    let x: float = 10.5;
+    let y: float = 3.2;
+    
+    let sum: float = x + y;
+    print("10.5 + 3.2 = ");
+    print(sum);
+    
+    let diff: float = x - y;
+    print("10.5 - 3.2 = ");
+    print(diff);
+    
+    let prod: float = x * y;
+    print("10.5 * 3.2 = ");
+    print(prod);
+    
+    let quot: float = x / y;
+    print("10.5 / 3.2 = ");
+    print(quot);
+}
