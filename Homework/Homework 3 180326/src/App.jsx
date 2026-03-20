@@ -279,6 +279,37 @@ function AppContent() {
     return currentMealData[category][Math.floor(Math.random() * currentMealData[category].length)]
   }
 
+  const getDisplayMeal = (meal, category) => {
+    if (!meal) return null
+    if (!meal.hasAllLanguages || !meal.originalName) return meal
+    
+    const allData = getAllMealData()
+    const localizedMeal = findMealByName(meal.originalName, category, language)
+    
+    if (localizedMeal) {
+      return {
+        ...meal,
+        name: localizedMeal.name,
+        description: meal.aiGenerated ? meal.description : localizedMeal.description,
+        steps: meal.aiGenerated ? meal.steps : localizedMeal.steps,
+      }
+    }
+    
+    return meal
+  }
+
+  const getAllMealData = () => ({
+    zh: mealData,
+    en: mealDataEn,
+    id: mealDataId,
+  })
+
+  const findMealByName = (name, category, lang) => {
+    const allData = getAllMealData()
+    const mealList = allData[lang]?.[category] || allData.zh[category]
+    return mealList.find(m => m.name === name)
+  }
+
   const generateMealWithAI = async (category) => {
     const baseMeal = getRandomMeal(category)
     setGeneratingMeal(prev => ({ ...prev, [category]: true }))
@@ -286,7 +317,14 @@ function AppContent() {
     setApiError(null)
 
     if (!openaiApiKey) {
-      setApprovedMeals(prev => ({ ...prev, [category]: baseMeal }))
+      setApprovedMeals(prev => ({ 
+        ...prev, 
+        [category]: { 
+          ...baseMeal, 
+          originalName: baseMeal.name,
+          hasAllLanguages: true
+        }
+      }))
       setGeneratingMeal(prev => ({ ...prev, [category]: false }))
       setTimeout(() => setAiGenerating(prev => ({ ...prev, [category]: false })), 500)
       return
@@ -302,13 +340,23 @@ function AppContent() {
           ...baseMeal, 
           description: aiDetails.description,
           steps: aiDetails.steps,
-          aiGenerated: true
+          aiGenerated: true,
+          originalName: baseMeal.name,
+          hasAllLanguages: true
         } 
       }))
     } catch (error) {
       console.error('AI generation failed:', error)
       setApiError(error.message)
-      setApprovedMeals(prev => ({ ...prev, [category]: { ...baseMeal, aiGenerated: false } }))
+      setApprovedMeals(prev => ({ 
+        ...prev, 
+        [category]: { 
+          ...baseMeal, 
+          aiGenerated: false,
+          originalName: baseMeal.name,
+          hasAllLanguages: true
+        }
+      }))
     } finally {
       setGeneratingMeal(prev => ({ ...prev, [category]: false }))
       setTimeout(() => {
@@ -425,7 +473,7 @@ function AppContent() {
                       {language === 'id' ? 'Pemilihan Menu' : language === 'en' ? 'Meal Selection' : '選擇菜單'}
                     </h3>
                     {approvedMeals[activeTab] ? (
-                      <MealCard meal={approvedMeals[activeTab]} />
+                      <MealCard meal={getDisplayMeal(approvedMeals[activeTab], activeTab)} />
                     ) : (
                       <div className="text-center py-8 text-gray-500">
                         <Sparkles className="w-12 h-12 mx-auto mb-2 text-primary-300" />
@@ -494,7 +542,7 @@ function AppContent() {
                         <p className="text-blue-600 text-sm">{t('generatingDescription')}</p>
                       </div>
                     ) : approvedMeals[activeTab] ? (
-                      <MealDescription meal={approvedMeals[activeTab]} showSteps={false} />
+                      <MealDescription meal={getDisplayMeal(approvedMeals[activeTab], activeTab)} showSteps={false} />
                     ) : (
                       <div className="text-center py-8 text-gray-400">
                         <Utensils className="w-12 h-12 mx-auto mb-2 text-blue-200" />
@@ -529,7 +577,7 @@ function AppContent() {
                         <p className="text-amber-600 text-sm">{t('generatingSteps')}</p>
                       </div>
                     ) : approvedMeals[activeTab] ? (
-                      <MealDescription meal={approvedMeals[activeTab]} showDescription={false} />
+                      <MealDescription meal={getDisplayMeal(approvedMeals[activeTab], activeTab)} showDescription={false} />
                     ) : (
                       <div className="text-center py-8 text-gray-400">
                         <BarChart3 className="w-12 h-12 mx-auto mb-2 text-amber-200" />
