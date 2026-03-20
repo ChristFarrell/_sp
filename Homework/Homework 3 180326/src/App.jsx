@@ -270,6 +270,7 @@ function AppContent() {
     lunch: false,
     dinner: false,
   })
+  const [apiError, setApiError] = useState(null)
   const [openaiApiKey, setOpenaiApiKey] = useState(getApiKey())
 
   const currentMealData = getMealData(language)
@@ -282,6 +283,7 @@ function AppContent() {
     const baseMeal = getRandomMeal(category)
     setGeneratingMeal(prev => ({ ...prev, [category]: true }))
     setAiGenerating(prev => ({ ...prev, [category]: true }))
+    setApiError(null)
 
     if (!openaiApiKey) {
       setApprovedMeals(prev => ({ ...prev, [category]: baseMeal }))
@@ -291,7 +293,7 @@ function AppContent() {
     }
 
     try {
-      console.log('Calling OpenAI API for:', baseMeal.name)
+      console.log('Calling Groq API for:', baseMeal.name)
       const aiDetails = await generateMealDetails(baseMeal.name, language, openaiApiKey)
       console.log('AI Response:', aiDetails)
       setApprovedMeals(prev => ({ 
@@ -305,6 +307,7 @@ function AppContent() {
       }))
     } catch (error) {
       console.error('AI generation failed:', error)
+      setApiError(error.message)
       setApprovedMeals(prev => ({ ...prev, [category]: { ...baseMeal, aiGenerated: false } }))
     } finally {
       setGeneratingMeal(prev => ({ ...prev, [category]: false }))
@@ -457,6 +460,12 @@ function AppContent() {
                         </button>
                       )}
                     </div>
+                    
+                    {apiError && (
+                      <div className="mt-3 p-3 bg-red-50 border border-red-200 rounded-xl text-red-600 text-xs">
+                        <strong>API Error:</strong> {apiError}
+                      </div>
+                    )}
                   </div>
 
                   <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-2xl p-5 border border-blue-100">

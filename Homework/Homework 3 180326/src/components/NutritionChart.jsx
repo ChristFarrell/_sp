@@ -1,6 +1,4 @@
-import { useState } from 'react'
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-import { Sparkles, Zap } from 'lucide-react'
 import { useLanguage } from '../LanguageContext'
 
 const COLORS = {
@@ -13,7 +11,6 @@ const COLORS = {
 
 function NutritionChart({ meals }) {
   const { t } = useLanguage()
-  const [showRecommendation, setShowRecommendation] = useState(false)
 
   const totalNutrition = meals.reduce((acc, meal) => ({
     protein: acc.protein + meal.protein,
@@ -23,33 +20,13 @@ function NutritionChart({ meals }) {
     calories: acc.calories + meal.calories,
   }), { protein: 0, carbs: 0, fat: 0, fiber: 0, calories: 0 })
 
-  const recommendedMeals = {
-    breakfast: { protein: 25, carbs: 60, fat: 20, calories: 500 },
-    lunch: { protein: 35, carbs: 80, fat: 25, calories: 700 },
-    dinner: { protein: 40, carbs: 90, fat: 30, calories: 650 },
+  const displayData = {
+    protein: totalNutrition.protein,
+    carbs: totalNutrition.carbs,
+    fat: totalNutrition.fat,
+    fiber: totalNutrition.fiber,
+    calories: totalNutrition.calories,
   }
-
-  const getDisplayData = () => {
-    if (!showRecommendation || meals.length === 0) {
-      return {
-        protein: totalNutrition.protein,
-        carbs: totalNutrition.carbs,
-        fat: totalNutrition.fat,
-        fiber: totalNutrition.fiber,
-        calories: totalNutrition.calories,
-      }
-    }
-    
-    return {
-      protein: totalNutrition.protein + 20,
-      carbs: totalNutrition.carbs + 70,
-      fat: totalNutrition.fat + 15,
-      fiber: totalNutrition.fiber + 10,
-      calories: totalNutrition.calories + 250,
-    }
-  }
-
-  const displayData = getDisplayData()
 
   const pieData = [
     { name: t('protein'), value: displayData.protein, color: COLORS.protein },
@@ -67,9 +44,9 @@ function NutritionChart({ meals }) {
 
   const barData = meals.map((meal) => ({
     name: getMealLabel(meal),
-    [t('protein')]: showRecommendation ? meal.protein + 8 : meal.protein,
-    [t('carbs')]: showRecommendation ? meal.carbs + 25 : meal.carbs,
-    [t('fat')]: showRecommendation ? meal.fat + 6 : meal.fat,
+    [t('protein')]: meal.protein,
+    [t('carbs')]: meal.carbs,
+    [t('fat')]: meal.fat,
   }))
 
   const dailyTarget = { protein: 60, carbs: 300, fat: 65, fiber: 25 }
@@ -84,52 +61,6 @@ function NutritionChart({ meals }) {
 
   return (
     <div className="space-y-8">
-      <div className="flex justify-end">
-        <button
-          onClick={() => setShowRecommendation(!showRecommendation)}
-          className={`flex items-center gap-2 px-6 py-3 rounded-xl font-medium transition-all shadow-md ${
-            showRecommendation
-              ? 'bg-gradient-to-r from-amber-500 to-orange-500 text-white'
-              : 'bg-gradient-to-r from-primary-500 to-emerald-500 text-white hover:shadow-lg'
-          }`}
-        >
-          <Zap className={`w-5 h-5 ${showRecommendation ? 'animate-pulse' : ''}`} />
-          {showRecommendation ? t('hideRecommendation') : t('showRecommendation')}
-        </button>
-      </div>
-
-      {showRecommendation && (
-        <div className="bg-gradient-to-r from-amber-100 to-orange-100 rounded-2xl p-6 border-2 border-amber-300">
-          <div className="flex items-center gap-3 mb-4">
-            <Sparkles className="w-6 h-6 text-amber-600" />
-            <h3 className="text-lg font-bold text-gray-800">
-              {t('aiRecommendation')}
-            </h3>
-          </div>
-          <p className="text-gray-700 mb-4">
-            {t('recommendationText')}
-          </p>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            <div className="bg-white/60 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-500">{t('protein')}</p>
-              <p className="text-2xl font-bold text-red-500">+20g</p>
-            </div>
-            <div className="bg-white/60 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-500">{t('carbs')}</p>
-              <p className="text-2xl font-bold text-blue-500">+70g</p>
-            </div>
-            <div className="bg-white/60 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-500">{t('fat')}</p>
-              <p className="text-2xl font-bold text-purple-500">+15g</p>
-            </div>
-            <div className="bg-white/60 rounded-xl p-4 text-center">
-              <p className="text-sm text-gray-500">{t('kcal')}</p>
-              <p className="text-2xl font-bold text-amber-500">+250</p>
-            </div>
-          </div>
-        </div>
-      )}
-
       <div className="grid md:grid-cols-2 gap-6">
         <div className="bg-gradient-to-br from-primary-50 to-primary-100 rounded-2xl p-6">
           <h3 className="text-lg font-bold text-gray-800 mb-4">{t('nutritionRatio')}</h3>
@@ -239,7 +170,7 @@ function NutritionChart({ meals }) {
             </p>
             <p className="font-bold text-gray-800 truncate">{meal.name}</p>
             <p className="text-2xl font-bold text-primary-600 mt-2">
-              {showRecommendation ? meal.calories + 80 : meal.calories}
+              {meal.calories}
             </p>
             <p className="text-xs text-gray-500">{t('kcal')}</p>
           </div>

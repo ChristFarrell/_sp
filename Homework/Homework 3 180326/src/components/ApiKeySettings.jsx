@@ -1,6 +1,6 @@
 import { useState } from 'react'
-import { Settings, Key, Eye, EyeOff, Check, X } from 'lucide-react'
-import { saveApiKey, getApiKey, clearApiKey } from '../openaiService'
+import { Settings, Key, Eye, EyeOff, Check, X, Loader2 } from 'lucide-react'
+import { saveApiKey, getApiKey, clearApiKey, testApiKey } from '../openaiService'
 import { useLanguage } from '../LanguageContext'
 
 function ApiKeySettings({ onApiKeyChange }) {
@@ -9,13 +9,20 @@ function ApiKeySettings({ onApiKeyChange }) {
   const [apiKey, setApiKey] = useState(getApiKey())
   const [showKey, setShowKey] = useState(false)
   const [isSaved, setIsSaved] = useState(false)
+  const [isTesting, setIsTesting] = useState(false)
+  const [testResult, setTestResult] = useState(null)
 
-  const handleSave = () => {
+  const handleSave = async () => {
     if (apiKey.trim()) {
       saveApiKey(apiKey.trim())
       onApiKeyChange(apiKey.trim())
       setIsSaved(true)
       setTimeout(() => setIsSaved(false), 2000)
+      
+      setIsTesting(true)
+      const result = await testApiKey(apiKey.trim())
+      setTestResult(result)
+      setIsTesting(false)
     }
   }
 
@@ -23,6 +30,7 @@ function ApiKeySettings({ onApiKeyChange }) {
     clearApiKey()
     setApiKey('')
     onApiKeyChange('')
+    setTestResult(null)
   }
 
   return (
@@ -58,9 +66,12 @@ function ApiKeySettings({ onApiKeyChange }) {
                   <input
                     type={showKey ? 'text' : 'password'}
                     value={apiKey}
-                    onChange={(e) => setApiKey(e.target.value)}
+                    onChange={(e) => {
+                      setApiKey(e.target.value)
+                      setTestResult(null)
+                    }}
                     placeholder="gsk_..."
-                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all"
+                    className="w-full px-4 py-3 pr-12 border border-gray-300 rounded-xl focus:ring-2 focus:ring-purple-500 focus:border-purple-500 transition-all text-gray-800 placeholder-gray-400"
                   />
                   <button
                     type="button"
@@ -84,14 +95,19 @@ function ApiKeySettings({ onApiKeyChange }) {
               <div className="flex gap-2">
                 <button
                   onClick={handleSave}
-                  disabled={!apiKey.trim()}
+                  disabled={!apiKey.trim() || isTesting}
                   className={`flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-medium transition-all ${
-                    apiKey.trim()
+                    apiKey.trim() && !isTesting
                       ? 'bg-gradient-to-r from-purple-500 to-indigo-500 text-white hover:shadow-md'
                       : 'bg-gray-200 text-gray-400 cursor-not-allowed'
                   }`}
                 >
-                  {isSaved ? (
+                  {isTesting ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Testing...
+                    </>
+                  ) : isSaved ? (
                     <>
                       <Check className="w-4 h-4" />
                       {t('saved')}
@@ -110,6 +126,26 @@ function ApiKeySettings({ onApiKeyChange }) {
                   </button>
                 )}
               </div>
+
+              {testResult && (
+                <div className={`flex items-center gap-2 text-sm rounded-xl p-3 ${
+                  testResult.success 
+                    ? 'bg-emerald-50 text-emerald-600 border border-emerald-200' 
+                    : 'bg-red-50 text-red-600 border border-red-200'
+                }`}>
+                  {testResult.success ? (
+                    <>
+                      <Check className="w-4 h-4" />
+                      API Key Valid - Ready!
+                    </>
+                  ) : (
+                    <>
+                      <X className="w-4 h-4" />
+                      {testResult.error}
+                    </>
+                  )}
+                </div>
+              )}
 
               {apiKey && (
                 <div className="flex items-center gap-2 text-sm text-emerald-600 bg-emerald-50 rounded-xl p-3">
