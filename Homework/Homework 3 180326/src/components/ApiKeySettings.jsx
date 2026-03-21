@@ -37,11 +37,9 @@ function ApiKeySettings({ onApiKeyChange }) {
     <div className="relative">
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`flex items-center gap-2 px-3 py-2 rounded-xl transition-all ${
-          apiKey ? 'bg-emerald-500/20 text-emerald-600' : 'bg-white/20 text-white hover:bg-white/30'
-        }`}
+        className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white rounded-full px-3 py-2 transition-all"
       >
-        <Settings className="w-5 h-5" />
+        <Settings className="w-4 h-4" />
         <span className="hidden sm:inline text-sm">{apiKey ? 'API ✓' : 'API'}</span>
       </button>
 
