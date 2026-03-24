@@ -97,4 +97,55 @@ Later on, the compiler traverses the AST and generates bytecode instructions for
 | CALL, RETURN | Function calls |
 | HALT | Stop execution |
 
-## [Homework 3]()
+## [Homework 3](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%203%20180326)
+
+This homework was getting helped by Opencode AI for help understanding.<br>
+
+On this homework, I make the AI Smart Food Assistant (AI 智能美食助手). It's a personal AI-powered healthy meal planning website that helps users generate and track their daily meals. The application provides AI-generated meal recommendations for breakfast, lunch, and dinner, complete with nutrition analysis, cooking instructions, and meal history tracking. Each user has their own personalized dashboard with saved meal plans and history.<br>
+
+1. Translator
+    - Have 3 different languages, english, indonesians, and Traditional Chinese
+    - The entire website interface is fully translated, including meal descriptions, cooking steps, navigation labels, and all UI elements
+
+2. Groq API
+    - Uses **Groq API** with **Llama 3.3 70B Versatile** model for AI meal generation
+    - Generates random healthy meals from Indonesian and Chinese cuisines
+    - Provides AI-generated descriptions and cooking steps
+
+3. User Authentication (Sign In / Sign Up)
+    - **Sign Up**: Create a new account with username and password
+    - **Sign In**: Login with existing credentials
+    - **Logout**: Secure logout functionality
+    - Each user's data is stored separately in localStorage
+
+4. Meal and Nutrition
+    - Generate AI-powered meal recommendations for:
+        - **Breakfast** (300-450 kcal range)
+        - **Lunch** (500-700 kcal range)
+        - **Dinner** (500-750 kcal range)
+    - Confirm meals to add to daily plan
+    - Progress tracking vs daily recommendations
+
+5. History Calendar
+    - Calendar view of past meals
+    - Click on dates with recorded meals to view history
+
+The data storage atructure can be seen as inside of localStorage
+```
+localStorage:
+├── food_users                  # All registered users
+├── current_user                # Currently logged in user
+├── groq_api_key                # User's API key
+├── user_{id}_confirmed_meals   # Today's confirmed meals
+├── user_{id}_saved_date        # Last saved date
+└── user_{id}_meal_history      # Historical meal data
+```
+
+The technical stack will work as this:
+- **Frontend**: React 18 + Vite
+- **Styling**: Tailwind CSS
+- **Icons**: Lucide React
+- **Charts**: Recharts
+- **API**: Groq API (Llama 3.3 70B)
+- **Storage**: localStorage (per-user)
+- **Language**: JavaScript (JSX)
