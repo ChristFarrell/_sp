@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Let AI Teach You - E-Book Series</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+</head>
+<body>
+    <header>
+        <h1>Let AI Teach You Coding</h1>
+        <p>Your AI-Powered Programming E-Book Series</p>
+    </header>
+
+    <main>
+        <div id="home-view">
+            <div class="books-grid" id="books-grid"></div>
+        </div>
+
+        <div id="book-view" class="hidden">
+            <button class="back-btn" onclick="showHome()">← Back</button>
+            <h2 id="book-title">Book Title</h2>
+            <p id="book-description">Book description</p>
+            <div class="chapter-list" id="chapter-list"></div>
+        </div>
+
+        <div id="chapter-view" class="hidden">
+            <button class="back-btn" onclick="showBook()">← Back</button>
+            <h2 id="chapter-title">Chapter Title</h2>
+            <div class="chapter-content" id="chapter-content"></div>
+            <div class="chapter-nav">
+                <button class="nav-btn" id="prev-chapter" onclick="prevChapter()">← Prev</button>
+                <button class="nav-btn" id="next-chapter" onclick="nextChapter()">Next →</button>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First JavaScript - Book 2</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f5f5f5; }
+        h1 { color: #333; text-align: center; }
+        button { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color: #3498db; color: white; border: none; border-radius: 5px; margin: 5px; }
+        button:hover { background-color: #2980b9; }
+        #output { margin-top: 20px; padding: 15px; background: white; border-radius: 8px; min-height: 50px; }
+    </style>
+</head>
+<body>
+    <h1>Hello, JavaScript!</h1>
+    <div style="text-align: center;">
+        <button onclick="sayHello()">Click Me!</button>
+        <button onclick="changeText()">Change Text</button>
+        <button onclick="showCount()">Show Click Count</button>
+    </div>
+    <div id="output">
+        <p id="demo">Click a button to see JavaScript in action!</p>
+    </div>
+
+    <script>
+        function sayHello() {
+            alert("Hello, World! Welcome to JavaScript!");
+        }
+
+        function changeText() {
+            const messages = [
+                "JavaScript makes websites interactive!",
+                "You can change HTML content dynamically!",
+                "This is called DOM manipulation!",
+                "JavaScript is amazing!",
+                "Keep learning and have fun!"
+            ];
+            const randomMessage = messages[Math.floor(Math.random() * messages.length)];
+            document.getElementById("demo").textContent = randomMessage;
+        }
+
+        let clickCount = 0;
+        
+        function showCount() {
+            clickCount++;
+            document.getElementById("demo").innerHTML = `
+                <strong>You have clicked!</strong><br>
+                Total clicks: <span style="color: #e74c3c; font-size: 24px;">${clickCount}</span>
+            `;
+        }
+
+        console.log("Welcome to JavaScript!");
+    </script>
+</body>
+</html>

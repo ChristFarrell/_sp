@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HTML5 Deep Dive - Book 3</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; max-width: 900px; margin: 0 auto; padding: 20px; }
+        header, nav, main, section, article, aside, footer { padding: 15px; margin: 10px 0; border-radius: 8px; }
+        header { background: #3498db; color: white; }
+        nav { background: #2ecc71; }
+        main { background: #f9f9f9; }
+        section { background: #e8f4f8; }
+        article { background: #fff; border-left: 4px solid #3498db; }
+        aside { background: #ffeaa7; }
+        footer { background: #2c3e50; color: white; }
+        form { background: #f8f9fa; padding: 20px; border-radius: 8px; }
+        .form-group { margin-bottom: 15px; }
+        label { display: block; margin-bottom: 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; }
+        button { background: #3498db; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>HTML5 Deep Dive - Book 3</h1>
+        <p>Learning semantic HTML and modern forms</p>
+    </header>
+    
+    <nav>
+        <a href="#semantic">Semantic HTML</a> |
+        <a href="#forms">Forms</a> |
+        <a href="#media">Media</a>
+    </nav>
+    
+    <main>
+        <section id="semantic">
+            <h2>Semantic HTML5 Elements</h2>
+            <article>
+                <h3>Why Use Semantic HTML?</h3>
+                <p>Semantic elements clearly describe their meaning to both the browser and developer.</p>
+            </article>
+            <article>
+                <h3>Common Semantic Elements</h3>
+                <ul>
+                    <li><strong>&lt;header&gt;</strong> - Header content</li>
+                    <li><strong>&lt;nav&gt;</strong> - Navigation links</li>
+                    <li><strong>&lt;main&gt;</strong> - Main content</li>
+                    <li><strong>&lt;article&gt;</strong> - Independent content</li>
+                    <li><strong>&lt;footer&gt;</strong> - Footer content</li>
+                </ul>
+            </article>
+        </section>
+        
+        <section id="forms">
+            <h2>HTML5 Forms & Validation</h2>
+            <form id="signupForm" novalidate>
+                <div class="form-group">
+                    <label for="name">Full Name:</label>
+                    <input type="text" id="name" name="name" placeholder="John Doe" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" required minlength="8">
+                </div>
+                <button type="submit">Sign Up</button>
+            </form>
+        </section>
+        
+        <section id="media">
+            <h2>HTML5 Media Elements</h2>
+            <article>
+                <h3>Audio</h3>
+                <audio controls>
+                    <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+                    Your browser does not support the audio element.
+                </audio>
+            </article>
+        </section>
+    </main>
+    
+    <aside>
+        <h3>Tips</h3>
+        <p>Always use semantic HTML for better accessibility!</p>
+    </aside>
+    
+    <footer>
+        <p>Part of "Let AI Teach You" Series</p>
+    </footer>
+
+    <script>
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Form submitted successfully!');
+        });
+    </script>
+</body>
+</html>

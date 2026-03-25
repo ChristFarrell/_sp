@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Counter - Mini Project</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+        .counter-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 { color: #333; margin-bottom: 30px; }
+        #counter {
+            font-size: 72px;
+            font-weight: bold;
+            color: #333;
+            margin: 20px 0;
+            transition: transform 0.1s;
+        }
+        .buttons { display: flex; gap: 10px; justify-content: center; }
+        button {
+            padding: 15px 30px;
+            font-size: 18px;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        button:hover { transform: translateY(-2px); }
+        #increment { background: #2ecc71; color: white; }
+        #decrement { background: #e74c3c; color: white; }
+        #reset { background: #3498db; color: white; }
+    </style>
+</head>
+<body>
+    <div class="counter-container">
+        <h1>Interactive Counter</h1>
+        <div id="counter">0</div>
+        <div class="buttons">
+            <button id="decrement">-</button>
+            <button id="reset">Reset</button>
+            <button id="increment">+</button>
+        </div>
+    </div>
+
+    <script>
+        const counterDisplay = document.getElementById('counter');
+        const incrementBtn = document.getElementById('increment');
+        const decrementBtn = document.getElementById('decrement');
+        const resetBtn = document.getElementById('reset');
+        
+        let count = 0;
+        
+        function updateDisplay() {
+            counterDisplay.textContent = count;
+            counterDisplay.style.color = count > 0 ? 'green' : count < 0 ? 'red' : '#333';
+            counterDisplay.style.transform = 'scale(1.2)';
+            setTimeout(() => counterDisplay.style.transform = 'scale(1)', 100);
+        }
+        
+        incrementBtn.addEventListener('click', () => { count++; updateDisplay(); });
+        decrementBtn.addEventListener('click', () => { count--; updateDisplay(); });
+        resetBtn.addEventListener('click', () => { count = 0; updateDisplay(); });
+        
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowUp' || e.key === '+') { count++; updateDisplay(); }
+            if (e.key === 'ArrowDown' || e.key === '-') { count--; updateDisplay(); }
+        });
+        
+        updateDisplay();
+    </script>
+</body>
+</html>
