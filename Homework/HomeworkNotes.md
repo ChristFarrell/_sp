@@ -149,3 +149,8 @@ The technical stack will work as this:
 - **API**: Groq API (Llama 3.3 70B)
 - **Storage**: localStorage (per-user)
 - **Language**: JavaScript (JSX)
+
+## [Homework 4](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%204%20250326)
+
+This homework was getting helped by Opencode AI for help understanding.<br>
+Follow this link for the notes : https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%204%20250326 <br>
