@@ -3,39 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Let AI Teach You - E-Book Series</title>
+    <title>Let AI Teach You - E-Book</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 </head>
 <body>
-    <header>
-        <h1>Let AI Teach You Coding</h1>
-        <p>Your AI-Powered Programming E-Book Series</p>
-    </header>
+    <div class="app-container">
+        <header class="book-header">
+            <div class="header-main">
+                <div class="header-title">
+                    <span class="header-icon">📖</span>
+                    <div>
+                        <h1>Let AI Teach You</h1>
+                        <p id="current-book-title">🐍 Python Fundamentals</p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="action-btn back-btn hidden" onclick="closeBook()" id="backBtn">
+                        <span>🏠</span>
+                        <span>Back</span>
+                    </button>
+                    <button class="action-btn open-btn" onclick="openBook()" id="openBtn">
+                        <span>📖</span>
+                        <span>Open</span>
+                    </button>
+                </div>
+            </div>
+            <nav class="chapter-nav" id="chapter-nav"></nav>
+        </header>
 
-    <main>
-        <div id="home-view">
-            <div class="books-grid" id="books-grid"></div>
-        </div>
-
-        <div id="book-view" class="hidden">
-            <button class="back-btn" onclick="showHome()">← Back</button>
-            <h2 id="book-title">Book Title</h2>
-            <p id="book-description">Book description</p>
-            <div class="chapter-list" id="chapter-list"></div>
-        </div>
-
-        <div id="chapter-view" class="hidden">
-            <button class="back-btn" onclick="showBook()">← Back</button>
-            <h2 id="chapter-title">Chapter Title</h2>
-            <div class="chapter-content" id="chapter-content"></div>
-            <div class="chapter-nav">
-                <button class="nav-btn" id="prev-chapter" onclick="prevChapter()">← Prev</button>
-                <button class="nav-btn" id="next-chapter" onclick="nextChapter()">Next →</button>
+        <div class="book-container">
+            <div class="book" id="book">
+                <div class="book-cover" id="book-cover">
+                    <div class="cover-content">
+                        <div class="cover-icon">📖</div>
+                        <h1>Let AI Teach You</h1>
+                        <p>Coding E-Book Series</p>
+                        <div class="cover-books">
+                            <span>🐍 Python</span>
+                            <span>⚡ JavaScript</span>
+                            <span>🌐 Web Dev</span>
+                            <span>📊 Data Science</span>
+                            <span>🏆 Competitive</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="pages-area" id="pages-area">
+                    <div class="page page-left" id="page-left">
+                        <div class="page-content" id="left-content"></div>
+                    </div>
+                    <div class="page-spine"></div>
+                    <div class="page page-right" id="page-right">
+                        <div class="page-content" id="right-content"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="book-controls hidden" id="book-controls">
+                <button class="control-btn" onclick="prevPage()" id="prevBtn" disabled>◀</button>
+                <span class="page-indicator">
+                    <span id="current-page">0</span> / <span id="total-pages">0</span>
+                </span>
+                <button class="control-btn" onclick="nextPage()" id="nextBtn">▶</button>
             </div>
         </div>
-    </main>
+    </div>
 
     <script src="script.js"></script>
 </body>
