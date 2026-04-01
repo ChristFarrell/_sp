@@ -153,4 +153,15 @@ The technical stack will work as this:
 ## [Homework 4](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%204%20250326)
 
 This homework was getting helped by Opencode AI for help understanding.<br>
-Follow this link for the notes : https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%204%20250326 <br>
+
+The book contain of 5 chapter<br>
+1. CH-1 : Pyhton Fundamentals
+   Learn Python from scratch with AI assistance. Covers variables, data types, control flow, functions, and your first projects.
+2. CH-2 : JavaScript Essentials 
+   Master JavaScript with AI guidance. Learn DOM manipulation, events, async programming, and build interactive web pages.
+3. CH-3 : Web Development with AI
+   Build modern websites using HTML, CSS, and frameworks—guided by AI from design to deployment.
+4. CH-4 : Data Science & AI
+   Dive into data analysis, visualization, and machine learning concepts with hands-on AI tutoring.
+5. CH-5 : Competitive Programming
+   Sharpen your problem-solving skills with AI-assisted algorithm practice and coding challenges.
