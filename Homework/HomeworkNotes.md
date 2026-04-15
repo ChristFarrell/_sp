@@ -165,3 +165,105 @@ The book contain of 5 chapter<br>
    Dive into data analysis, visualization, and machine learning concepts with hands-on AI tutoring.
 5. CH-5 : Competitive Programming
    Sharpen your problem-solving skills with AI-assisted algorithm practice and coding challenges.
+
+## [Homework 5](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%205%20150426)
+
+This homework was getting helped by Opencode AI and Claude for help understanding.<br>
+Link for Claude: https://claude.ai/share/85fb1a52-a690-4ba0-acf8-51d060f99f0b<br>
+Full explanation: https://github.com/ChristFarrell/_sp/blob/master/Homework/Homework%205%20150426/notes.md<br>
+
+1. Bank Account Simulation<br>
+   This simulation demonstrates **race conditions** and how to prevent them using **mutexes (locks)**. It simulates a person performing 100,000 deposits and 100,000 withdrawals on the same bank account using concurrent threads.
+    ```
+    Initial balance: $100
+    Thread 1 (Deposit $50):          Thread 2 (Withdraw $30):
+    1. Read balance = $100           1. Read balance = $100
+    2. Calculate: 100 + 50 = 150     2. Calculate: 100 - 30 = 70
+    3. Write balance = $150          3. Write balance = $70
+
+    Final balance: $70 (WRONG! Should be $120)
+    ```
+
+    One update is completely lost because both threads read the same initial value before either wrote their result back.
+
+    The code work by using of:<br>
+    **Mutex (Mutual Exclusion):**
+    - Ensures only one thread can execute a critical section at a time
+    - Implemented in Python as `threading.Lock()`
+    - Use `acquire()` to lock, `release()` to unlock (or use `with` for automatic handling)
+
+    **Critical Section:**
+    - Code that accesses shared mutable state
+    - Must be protected to prevent race conditions
+    - In this case: reading and writing `self.balance`
+
+    **Atomicity:**
+    - An atomic operation appears to happen instantaneously from other threads' perspectives
+    - No thread can observe a half-completed atomic operation
+    - Locks make non-atomic operations appear atomic
+
+2. Producer-Consumer Problem<br>
+   This demonstrates how to coordinate threads that produce data (producers) and threads that consume data (consumers) using a **bounded buffer** and **condition variables**.
+
+    ```
+    Producers → [Bounded Buffer] → Consumers
+    P1, P2        (Queue)         C1, C2, C3
+    ```
+
+    - **Producers** generate items and add them to a shared buffer
+    - **Consumers** remove items from the buffer and process them
+    - **Buffer** has limited capacity (bounded)
+
+    The code work by using of:
+    **Bounded Buffer:**
+    - Prevents unlimited memory growth
+    - Naturally throttles producers when consumers are slow
+
+    **Condition Variables:**
+    - More efficient than busy-waiting (checking repeatedly)
+    - Threads sleep while waiting, saving CPU
+    - Woken only when state changes
+
+    **Wait-Notify Pattern:**
+    - Producers notify consumers after adding items
+    - Consumers notify producers after removing items
+    - Both sides can make progress
+
+    **Flow Control:**
+    - Fast producers don't overwhelm slow consumers
+    - System reaches natural equilibrium
+
+3. Dining Philosophers Problem<br>
+   This is a classic synchronization problem that illustrates **deadlock** and strategies to prevent it. Five philosophers sit at a round table, alternating between thinking and eating, but they need two forks (shared resources) to eat.
+   ```
+             Fork 0
+        P0          P1
+    Fork 4            Fork 1
+        P4          P2
+              P3
+        Fork 3  Fork 2
+    ```
+
+    - 5 philosophers (P0-P4) sit around a circular table
+    - 5 forks placed between each pair of philosophers
+    - Each philosopher needs BOTH adjacent forks to eat
+    - After eating, they release both forks and think
+
+    For the solution, the code work by:<br>
+    ```
+    Normal philosophers (P0-P3):
+    - Pick up LEFT fork first, then RIGHT fork
+
+    Philosopher 4:
+    - Would normally pick up Fork 4 (left), then Fork 0 (right)
+    - But Fork 0 has lower ID than Fork 4
+    - So P4 picks up Fork 0 first, then Fork 4
+    - This breaks the circular wait!
+    ```
+
+    Each philosopher:
+    - **Thinks** for a random duration (0.5-1.5s)
+    - Gets **hungry** and requests forks
+    - **Waits** if forks aren't available
+    - **Eats** when both forks are acquired (0.3-0.8s)
+    - **Releases** forks and repeats
