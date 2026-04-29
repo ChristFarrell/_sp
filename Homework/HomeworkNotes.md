@@ -267,3 +267,233 @@ Full explanation: https://github.com/ChristFarrell/_sp/blob/master/Homework/Home
     - **Waits** if forks aren't available
     - **Eats** when both forks are acquired (0.3-0.8s)
     - **Releases** forks and repeats
+
+## [Homework 6](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%206%20220426)
+
+This homework was getting helped by Claude for help understanding.<br>
+Link for Claude: https://claude.ai/share/3e029e3c-11bc-45f6-b527-e233c07d251b<br>
+
+We asked to make the Linux System Programming — Interactive Simulator. A hands-on Python project that teaches core Linux system programming concepts through interactive step-by-step demos. 
+
+> Works on **Windows** (via `subprocess`) and **Linux/Mac** (via real `fork`, `execvp`, etc.)
+To run the code:
+```
+python main.py
+```
+Pick a demo from the menu (1–7), or type `8` to run all in order.<br>
+Each demo walks you through a concept **one step at a time**:
+```
+[Step 1]  Call fork() to split the process. Type:
+          os.fork()
+  $ os.fork()       ← you type this
+  ✓ Correct!        ← then the real code runs
+```
+
+- Type the command shown exactly
+- If wrong → it tells you and lets you retry
+- If correct → the code **actually executes** on your machine
+Do demos **1 → 7 in order** for the best learning flow.
+
+1. `fork()` — Create a Child Process
+Splits the current process into two identical copies running at the same time.
+
+```
+[Your Process]
+       |
+    fork()
+   /        \
+Parent        Child
+pid > 0       pid == 0
+```
+
+- `pid == 0` → you are the child
+- `pid > 0`  → you are the parent, pid = child's PID
+- Always call `os.wait()` so the child doesn't become a zombie
+
+2. `execvp()` — Replace Process with a Program
+Completely replaces the running program with a new one. Same PID, new code.
+
+```
+os.execvp("ls", ["ls", "-lh"])
+```
+
+- Lines after `execvp()` are **never reached** if it succeeds
+- Pattern: always `fork()` first, then `execvp()` inside the child
+- On Windows: simulated with `subprocess.run()`
+
+3. `open()` / `close()` — File Descriptors
+Every file/device/pipe is accessed through a **file descriptor (fd)** — a small integer the OS gives you.
+
+```
+fd table per process:
+┌────┬──────────────────┐
+│ 0  │ stdin  (keyboard)│
+│ 1  │ stdout (terminal)│
+│ 2  │ stderr (terminal)│
+│ 3  │ ← your file here │
+└────┴──────────────────┘
+```
+
+Common flags: `O_RDONLY`, `O_WRONLY`, `O_CREAT`, `O_TRUNC`, `O_APPEND`<br>
+Always `close()` when done — leaked fds cause bugs.
+
+4. `read()` / `write()` — Low-level I/O
+Move raw bytes in and out through a file descriptor.
+
+```python
+os.write(fd, b"Hello!\n")   # send bytes INTO fd
+os.read(fd, 1024)            # pull bytes FROM fd
+```
+
+- Data must be **bytes** (`b"..."` or `"text".encode()`)
+- `read()` may return fewer bytes than asked — always loop
+- `read()` returns `b""` at end of file
+
+5. `stdin(0)` / `stdout(1)` / `stderr(2)` — Standard File Descriptors
+Every process gets these 3 fds automatically at startup.
+
+| fd | name   | default         |
+|----|--------|-----------------|
+| 0  | stdin  | keyboard input  |
+| 1  | stdout | terminal output |
+| 2  | stderr | error output    |
+
+These are just numbers — `dup2()` can point them anywhere.<br>
+Shell redirects work because of these:
+```
+prog > out.txt      →  fd 1 redirected to file
+prog 2> err.txt     →  fd 2 redirected to file
+prog < in.txt       →  fd 0 redirected from file
+```
+
+6. `dup2()` — Redirect File Descriptors
+Makes `new_fd` point to the same place as `old_fd`.
+
+```
+Before dup2(3, 1):        After dup2(3, 1):
+┌────┬───────────┐         ┌────┬───────────┐
+│ 1  │ terminal  │  →      │ 1  │ file.txt  │ ← redirected!
+│ 3  │ file.txt  │         │ 3  │ file.txt  │
+└────┴───────────┘         └────┴───────────┘
+```
+
+Steps to redirect stdout to a file:<br>
+```python
+backup = os.dup(1)                          # save original stdout
+fd = os.open("out.txt", os.O_WRONLY|...)   # open destination
+os.dup2(fd, 1)                             # redirect stdout → file
+os.close(fd)                               # clean up extra fd
+# ... write stuff ...
+os.dup2(backup, 1)                         # restore stdout
+os.close(backup)
+```
+
+> **Windows note:** After `dup2()`, only use `os.write(1, b"...")` — never `print()` or `sys.stdout.write()` until restored.
+
+7. Pipeline — All Concepts Combined
+Simulates `cat data.txt | grep "KEEP"` built from scratch.
+
+```
+[Parent]
+   ├── fork() ──► [Child A]  open file → write to pipe write-end
+   │                    dup2(pipe_w, 1)   (stdout → pipe)
+   │
+   └── fork() ──► [Child B]  read from pipe read-end → filter → print
+                       dup2(pipe_r, 0)   (stdin ← pipe)
+```
+
+Every concept is used here: `fork`, `pipe`, `dup2`, `open`, `read`, `write`, `close`, `wait`, fd 0/1/2.
+
+**Windows vs Linux**
+
+| Concept      | Linux            | Windows (this project)      |
+|--------------|------------------|-----------------------------|
+| `fork()`     | `os.fork()`      | `subprocess.Popen()`        |
+| `execvp()`   | `os.execvp()`    | `subprocess.run()`          |
+| `open/close` | `os.open/close()`| same — works natively       |
+| `read/write` | `os.read/write()`| same — works natively       |
+| `dup2()`     | `os.dup2()`      | same — works natively       |
+| `pipe()`     | `os.pipe()`      | `subprocess.PIPE`           |
+
+Example of output:
+```
+
+╔══════════════════════════════════════════════════════════╗
+║       Linux System Programming — Interactive Simulator   ║
+║                                                          ║
+║  fork · execvp · open · close · read · write             ║
+║  dup2 · stdin(0) · stdout(1) · stderr(2)                 ║
+╚══════════════════════════════════════════════════════════╝
+
+────────────────────────────────────────────────────────
+  HOW TO USE THIS SIMULATOR
+────────────────────────────────────────────────────────
+
+  1. Type the command shown, press ENTER. If wrong, it tells you and lets you retry.
+  2. Each demo walks you through the real system calls step by step.
+  3. The code actually RUNS after you type each command — not just a simulation!
+  4. Do demos 1 to 7 in order for the best learning experience.
+
+
+  Press ENTER to continue...
+
+────────────────────────────────────────────────────────
+  MAIN MENU — choose a demo to run
+────────────────────────────────────────────────────────
+
+    [1]  fork()                   Create child process
+    [2]  execvp()                 Replace process with program
+    [3]  open() / close()         File descriptors
+    [4]  read() / write()         Low-level I/O
+    [5]  stdin / stdout / stderr  fd 0, 1, 2
+    [6]  dup2()                   Redirect file descriptors
+    [7]  Pipeline                 ALL concepts combined
+
+    [8]  Run ALL demos in order
+    [0]  Exit
+
+  Tip: do them in order 1→7 for best understanding!
+
+  >> 1
+
+────────────────────────────────────────────────────────
+  FORK()                   CREATE CHILD PROCESS
+────────────────────────────────────────────────────────
+
+  ╔═══════════════════════════════════════════════════╗
+  ║   CONCEPT: fork()  —  Create a Child Process     ║
+  ╚═══════════════════════════════════════════════════╝
+
+  fork() splits YOUR process into TWO identical copies.
+  Both run the same code, but get a different return value:
+
+      Parent  →  receives the child's PID  (a number > 0)
+      Child   →  receives 0
+
+              [Your Process]
+                     |
+                  fork()
+                /        \
+       pid > 0 /          \ pid == 0
+     [Parent]              [Child]
+     wait for              do work
+     child                 exit(0)
+
+
+  Press ENTER to continue...
+
+  [Step 1]  Call fork() to split the process. Type exactly:
+       os.fork()
+    Hint: just type:  os.fork()
+  user@ubuntu:~$ os.fork()
+    ✓ Correct!
+  [INFO]  Running os.fork() now...
+
+  [PARENT]  I spawned a child! My PID=16368, Child PID=5172
+  [CHILD ]  I was born! My PID=5172
+
+  [Step 2]  Check the return value to know who you are. Type:
+       if pid == 0:
+    Hint: this is how the child identifies itself
+  user@ubuntu:~$ if pid == 0
+```
