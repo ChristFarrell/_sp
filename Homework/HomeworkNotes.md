@@ -270,230 +270,116 @@ Full explanation: https://github.com/ChristFarrell/_sp/blob/master/Homework/Home
 
 ## [Homework 6](https://github.com/ChristFarrell/_sp/tree/master/Homework/Homework%206%20220426)
 
-This homework was getting helped by Claude for help understanding.<br>
-Link for Claude: https://claude.ai/share/3e029e3c-11bc-45f6-b527-e233c07d251b<br>
+This homework was getting helped by AI Studio for help understanding.<br>
+Link for AI Studio: https://drive.google.com/file/d/1BDKRE_nTXJBhwT9r4pGfFLhd62WGHIDn/view?usp=sharing, https://aistudio.google.com/app/prompts?state=%7B%22ids%22:%5B%221tHv_waIfEXIO7Fbbc5wAahwMiXirHn-T%22%5D,%22action%22:%22open%22,%22userId%22:%22100059528919497194278%22,%22resourceKeys%22:%7B%7D%7D&usp=sharing<br>
 
-We asked to make the Linux System Programming — Interactive Simulator. A hands-on Python project that teaches core Linux system programming concepts through interactive step-by-step demos. 
+We asked to make the fundamental of Linux POSIX System Calls, by implement them using of C language. The program itself was devide for 4 section.
 
-> Works on **Windows** (via `subprocess`) and **Linux/Mac** (via real `fork`, `execvp`, etc.)
-To run the code:
-```
-python main.py
-```
-Pick a demo from the menu (1–7), or type `8` to run all in order.<br>
-Each demo walks you through a concept **one step at a time**:
-```
-[Step 1]  Call fork() to split the process. Type:
-          os.fork()
-  $ os.fork()       ← you type this
-  ✓ Correct!        ← then the real code runs
-```
+1. Process Management<br>
+    - **fork ()** Used to create a new process by duplicating the calling process.
+        - Child Process: Receives a return value of 0.  
+        - Parent Process: Receives the Process ID (PID) of the child.  
+        - Use wait() to ensure the parent pauses until the child finished.
+        ```
+        6365: Hello World from Child Process!
+        6364: Hello World from Parent Process! (My child is 6365)
+        christianofarrellrachman@cloudshell:~$ ./fork_program
+        6377: Hello World from Child Process!
+        6376: Hello World from Parent Process! (My child is 6377)
+        ```
 
-- Type the command shown exactly
-- If wrong → it tells you and lets you retry
-- If correct → the code **actually executes** on your machine
-Do demos **1 → 7 in order** for the best learning flow.
+    - **execvp ()** Replaces the current process image with a new process image.
+        - Replacement: If successful, the original program stops entirely, and the new command (e.g., ls) takes over the process space.
+        ```
+        8197: I am about to run the 'ls' command using execvp...
+        total 244
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   415 May  1 02:18 close.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16088 May  1 02:18 close_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman  1255 May  1 02:29 combine.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16304 May  1 02:29 combine_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman    28 May  1 02:19 database.dat
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   443 May  1 02:23 dup2.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16216 May  1 02:23 dup2_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   386 May  1 02:13 execvp.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16144 May  1 02:30 execvp_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   488 May  1 02:08 fork.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16128 May  1 02:12 fork_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   488 May  1 02:07 fork.py
+        drwxr-xr-x 3 christianofarrellrachman christianofarrellrachman  4096 May  1 02:09 gopath
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   406 May  1 02:14 open
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   406 May  1 02:17 open.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16040 May  1 02:17 open_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   438 May  1 02:22 read.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman   913 May  1 02:05 README-cloudshell.txt
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16176 May  1 02:21 read_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   612 May  1 02:28 stderr2.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16104 May  1 02:28 stderr2_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   354 May  1 02:25 stdin0.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16144 May  1 02:25 stdin0_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   313 May  1 02:27 stdout1.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16008 May  1 02:27 stdout1_program
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman    25 May  1 02:22 testfile.txt
+        -rw-r--r-- 1 christianofarrellrachman christianofarrellrachman   396 May  1 02:22 write.c
+        -rwxr-xr-x 1 christianofarrellrachman christianofarrellrachman 16128 May  1 02:19 write_program
+        ```
+ 
+2. Basic I/O Operations
+    - **open()** : Creates a connection between a file and a file descriptor.
+        - Flags: Uses flags like O_CREAT (create if missing), O_WRONLY (write only), and O_RDONLY (read only).
+        - Permissions: Uses octal modes (e.g., 0644) to set file permissions.
+        ```
+        christianofarrellrachman@cloudshell:~$ ./open_program 
+        Successfully opened file! Linux gave it File Descriptor (FD): 3
+        ``` 
 
-1. `fork()` — Create a Child Process
-Splits the current process into two identical copies running at the same time.
+    - **close()** : Terminates the connection to a file descriptor, releasing the resource back to the system. It returns 0 on success.
+        ```
+        christianofarrellrachman@cloudshell:~$ ./close_program 
+        Opened file with FD: 3
+        Successfully closed FD 3.
+        ``` 
 
-```
-[Your Process]
-       |
-    fork()
-   /        \
-Parent        Child
-pid > 0       pid == 0
-```
+    - **read()** : Attempts to read a specified number of bytes from a file descriptor into a buffer.
+        ```
+        christianofarrellrachman@cloudshell:~$ ./read_program 
+        Data read from file:
+        Hello Linux File System!
+        ``` 
 
-- `pid == 0` → you are the child
-- `pid > 0`  → you are the parent, pid = child's PID
-- Always call `os.wait()` so the child doesn't become a zombie
+    - **write()** : Writes a specified number of bytes from a buffer to a file descriptor.
+        ```
+        christianofarrellrachman@cloudshell:~$ ./write_program
+        Wrote data to the file using write().
+        ``` 
+3. Advanced Descriptor Handling<br>
+    **dup2()**Duplicates an existing file descriptor onto a specific descriptor number.
+    - Redirection: Duplicate a file FD into a specific number (like 10), it will be reading from 10 and exactly the same as reading from the original file.  
+        ```
+        christianofarrellrachman@cloudshell:~$ ./dup2_program 
+        Original FD: 3
+        Duplicated FD: 10
+        Read from FD 10: Hello Linux File Sys
+        ```
 
-2. `execvp()` — Replace Process with a Program
-Completely replaces the running program with a new one. Same PID, new code.
+4. File Descriptors (FD)<br>
+    Every open file or communication channel is represented by an integer called a File Descriptor.
+    - **stdin0** : Standard input (keyboard/input stream).
+        ```
+        christianofarrellrachman@cloudshell:~$ ./stdin0_program 
+        Type something and press Enter: hello
+        You typed 6 bytes from FD 0: hello
+        ```
 
-```
-os.execvp("ls", ["ls", "-lh"])
-```
-
-- Lines after `execvp()` are **never reached** if it succeeds
-- Pattern: always `fork()` first, then `execvp()` inside the child
-- On Windows: simulated with `subprocess.run()`
-
-3. `open()` / `close()` — File Descriptors
-Every file/device/pipe is accessed through a **file descriptor (fd)** — a small integer the OS gives you.
-
-```
-fd table per process:
-┌────┬──────────────────┐
-│ 0  │ stdin  (keyboard)│
-│ 1  │ stdout (terminal)│
-│ 2  │ stderr (terminal)│
-│ 3  │ ← your file here │
-└────┴──────────────────┘
-```
-
-Common flags: `O_RDONLY`, `O_WRONLY`, `O_CREAT`, `O_TRUNC`, `O_APPEND`<br>
-Always `close()` when done — leaked fds cause bugs.
-
-4. `read()` / `write()` — Low-level I/O
-Move raw bytes in and out through a file descriptor.
-
-```python
-os.write(fd, b"Hello!\n")   # send bytes INTO fd
-os.read(fd, 1024)            # pull bytes FROM fd
-```
-
-- Data must be **bytes** (`b"..."` or `"text".encode()`)
-- `read()` may return fewer bytes than asked — always loop
-- `read()` returns `b""` at end of file
-
-5. `stdin(0)` / `stdout(1)` / `stderr(2)` — Standard File Descriptors
-Every process gets these 3 fds automatically at startup.
-
-| fd | name   | default         |
-|----|--------|-----------------|
-| 0  | stdin  | keyboard input  |
-| 1  | stdout | terminal output |
-| 2  | stderr | error output    |
-
-These are just numbers — `dup2()` can point them anywhere.<br>
-Shell redirects work because of these:
-```
-prog > out.txt      →  fd 1 redirected to file
-prog 2> err.txt     →  fd 2 redirected to file
-prog < in.txt       →  fd 0 redirected from file
-```
-
-6. `dup2()` — Redirect File Descriptors
-Makes `new_fd` point to the same place as `old_fd`.
-
-```
-Before dup2(3, 1):        After dup2(3, 1):
-┌────┬───────────┐         ┌────┬───────────┐
-│ 1  │ terminal  │  →      │ 1  │ file.txt  │ ← redirected!
-│ 3  │ file.txt  │         │ 3  │ file.txt  │
-└────┴───────────┘         └────┴───────────┘
-```
-
-Steps to redirect stdout to a file:<br>
-```python
-backup = os.dup(1)                          # save original stdout
-fd = os.open("out.txt", os.O_WRONLY|...)   # open destination
-os.dup2(fd, 1)                             # redirect stdout → file
-os.close(fd)                               # clean up extra fd
-# ... write stuff ...
-os.dup2(backup, 1)                         # restore stdout
-os.close(backup)
-```
-
-> **Windows note:** After `dup2()`, only use `os.write(1, b"...")` — never `print()` or `sys.stdout.write()` until restored.
-
-7. Pipeline — All Concepts Combined
-Simulates `cat data.txt | grep "KEEP"` built from scratch.
-
-```
-[Parent]
-   ├── fork() ──► [Child A]  open file → write to pipe write-end
-   │                    dup2(pipe_w, 1)   (stdout → pipe)
-   │
-   └── fork() ──► [Child B]  read from pipe read-end → filter → print
-                       dup2(pipe_r, 0)   (stdin ← pipe)
-```
-
-Every concept is used here: `fork`, `pipe`, `dup2`, `open`, `read`, `write`, `close`, `wait`, fd 0/1/2.
-
-**Windows vs Linux**
-
-| Concept      | Linux            | Windows (this project)      |
-|--------------|------------------|-----------------------------|
-| `fork()`     | `os.fork()`      | `subprocess.Popen()`        |
-| `execvp()`   | `os.execvp()`    | `subprocess.run()`          |
-| `open/close` | `os.open/close()`| same — works natively       |
-| `read/write` | `os.read/write()`| same — works natively       |
-| `dup2()`     | `os.dup2()`      | same — works natively       |
-| `pipe()`     | `os.pipe()`      | `subprocess.PIPE`           |
-
-Example of output:
-```
-
-╔══════════════════════════════════════════════════════════╗
-║       Linux System Programming — Interactive Simulator   ║
-║                                                          ║
-║  fork · execvp · open · close · read · write             ║
-║  dup2 · stdin(0) · stdout(1) · stderr(2)                 ║
-╚══════════════════════════════════════════════════════════╝
-
-────────────────────────────────────────────────────────
-  HOW TO USE THIS SIMULATOR
-────────────────────────────────────────────────────────
-
-  1. Type the command shown, press ENTER. If wrong, it tells you and lets you retry.
-  2. Each demo walks you through the real system calls step by step.
-  3. The code actually RUNS after you type each command — not just a simulation!
-  4. Do demos 1 to 7 in order for the best learning experience.
-
-
-  Press ENTER to continue...
-
-────────────────────────────────────────────────────────
-  MAIN MENU — choose a demo to run
-────────────────────────────────────────────────────────
-
-    [1]  fork()                   Create child process
-    [2]  execvp()                 Replace process with program
-    [3]  open() / close()         File descriptors
-    [4]  read() / write()         Low-level I/O
-    [5]  stdin / stdout / stderr  fd 0, 1, 2
-    [6]  dup2()                   Redirect file descriptors
-    [7]  Pipeline                 ALL concepts combined
-
-    [8]  Run ALL demos in order
-    [0]  Exit
-
-  Tip: do them in order 1→7 for best understanding!
-
-  >> 1
-
-────────────────────────────────────────────────────────
-  FORK()                   CREATE CHILD PROCESS
-────────────────────────────────────────────────────────
-
-  ╔═══════════════════════════════════════════════════╗
-  ║   CONCEPT: fork()  —  Create a Child Process     ║
-  ╚═══════════════════════════════════════════════════╝
-
-  fork() splits YOUR process into TWO identical copies.
-  Both run the same code, but get a different return value:
-
-      Parent  →  receives the child's PID  (a number > 0)
-      Child   →  receives 0
-
-              [Your Process]
-                     |
-                  fork()
-                /        \
-       pid > 0 /          \ pid == 0
-     [Parent]              [Child]
-     wait for              do work
-     child                 exit(0)
-
-
-  Press ENTER to continue...
-
-  [Step 1]  Call fork() to split the process. Type exactly:
-       os.fork()
-    Hint: just type:  os.fork()
-  user@ubuntu:~$ os.fork()
-    ✓ Correct!
-  [INFO]  Running os.fork() now...
-
-  [PARENT]  I spawned a child! My PID=16368, Child PID=5172
-  [CHILD ]  I was born! My PID=5172
-
-  [Step 2]  Check the return value to know who you are. Type:
-       if pid == 0:
-    Hint: this is how the child identifies itself
-  user@ubuntu:~$ if pid == 0
-```
+    - **stdout1** : Standard output (terminal display).
+        ```
+        christianofarrellrachman@cloudshell:~$ ./stdout1_program
+        [WARNING] System Initialized.
+        ```
+    
+    - **stderr2** : Standard error (error logs/diagnostic messages).
+        ```
+        christianofarrellrachman@cloudshell:~$ ./stderr2_program 
+        Running program normally on FD 1...
+        [ERROR] File: stderr2.c | Line: 17 | Could not connect to database!
+        [ERROR] File: stderr2.c | Line: 18 | Memory allocation failed!
+        ```  
