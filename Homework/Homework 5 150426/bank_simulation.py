@@ -27,11 +27,13 @@ class BankAccount:
         """No lock: susceptible to race conditions."""
         current = self.balance
         # Simulate a tiny processing delay that exposes the race window
+        time.sleep(0.000001)
         current += amount
         self.balance = current
 
     def withdraw_unsafe(self, amount: float):
         current = self.balance
+        time.sleep(0.000001)
         current -= amount
         self.balance = current
 
