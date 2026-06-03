@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verify OTP — FileManager</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --cream:#faf8f5;--surface:#ffffff;--border:#e8dfd4;
+      --brown-dark:#5d4037;--brown:#8d6e63;--brown-light:#a1887f;
+      --accent:#6d4c41;--text:#3e2723;--muted:#795548;
+      --success:#7cb342;--danger:#d32f2f;--r:12px;
+    }
+    body{background:var(--cream);color:var(--text);font-family:'Inter',sans-serif;
+         min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;
+         background-image:radial-gradient(circle at 20% 50%, rgba(141,110,99,.03) 0%, transparent 50%),
+                          radial-gradient(circle at 80% 80%, rgba(93,64,55,.03) 0%, transparent 50%);}
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:18px;
+          width:100%;max-width:440px;padding:48px 40px;
+          box-shadow:0 20px 60px rgba(93,64,55,.12), 0 8px 20px rgba(93,64,55,.08);
+          position:relative;}
+    .card::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;
+      background:linear-gradient(90deg,var(--brown-light),var(--brown-dark),var(--brown));
+      border-radius:18px 18px 0 0;}
+    .logo{text-align:center;margin-bottom:36px;}
+    .logo-icon{font-size:48px;display:block;margin-bottom:14px;
+               filter:drop-shadow(0 4px 12px rgba(93,64,55,.15));}
+    .logo h1{font-family:'Playfair Display',serif;font-size:26px;color:var(--brown-dark);
+             font-weight:700;letter-spacing:-0.5px;}
+    .logo p{color:var(--muted);font-size:14px;margin-top:6px;font-weight:500;}
+    .status-box{background:linear-gradient(135deg,#fef9f3 0%,#fff5eb 100%);
+                border:1px solid #f4dbc4;border-radius:var(--r);padding:18px 20px;
+                margin-bottom:28px;text-align:center;}
+    .status-box .user{font-size:15px;color:var(--brown-dark);font-weight:600;margin-bottom:8px;}
+    .status-box .email{font-size:13px;color:var(--muted);display:flex;
+                        align-items:center;justify-content:center;gap:6px;}
+    .alert{padding:14px 16px;border-radius:var(--r);margin-bottom:22px;font-size:14px;
+           border:1px solid;display:flex;align-items:center;gap:10px;}
+    .alert-error  {background:#ffebee;border-color:#ffcdd2;color:#c62828;}
+    .alert-success{background:#f1f8e9;border-color:#dcedc8;color:#558b2f;}
+    label{display:block;margin-bottom:8px;font-size:13px;font-weight:600;
+          color:var(--brown-dark);letter-spacing:0.3px;}
+    input[type=text]{width:100%;padding:14px 16px;background:var(--cream);
+      border:2px solid var(--border);border-radius:var(--r);color:var(--text);
+      font-family:'Inter',sans-serif;font-size:16px;font-weight:500;
+      letter-spacing:4px;text-align:center;
+      transition:border-color .3s,box-shadow .3s,background .3s;}
+    input:focus{outline:none;border-color:var(--brown);
+                box-shadow:0 0 0 4px rgba(141,110,99,.12);background:var(--surface);}
+    input::placeholder{letter-spacing:normal;font-weight:400;}
+    .form-group{margin-bottom:24px;}
+    .btn{width:100%;padding:15px;border:none;border-radius:var(--r);font-size:15px;
+         font-weight:600;cursor:pointer;font-family:'Inter',sans-serif;
+         transition:all .3s;display:flex;align-items:center;justify-content:center;gap:8px;}
+    .btn-primary{background:linear-gradient(135deg,var(--brown-dark) 0%,var(--brown) 100%);
+                 color:white;box-shadow:0 4px 14px rgba(93,64,55,.25);}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(93,64,55,.35);}
+    .btn-primary:active{transform:translateY(0);}
+    .btn-primary:disabled{opacity:.6;cursor:not-allowed;transform:none;box-shadow:none;}
+    .btn-secondary{background:transparent;color:var(--brown);border:2px solid var(--border);
+                    margin-top:12px;}
+    .btn-secondary:hover{background:var(--cream);border-color:var(--brown-light);}
+    .divider{display:flex;align-items:center;gap:12px;margin:24px 0;color:var(--muted);font-size:13px;}
+    .divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border);}
+    .spinner{width:18px;height:18px;border:2px solid rgba(255,255,255,.3);
+             border-top-color:white;border-radius:50%;animation:spin .8s linear infinite;display:none;}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .footer-note{margin-top:28px;text-align:center;font-size:12px;color:var(--muted);
+                 padding-top:24px;border-top:1px solid var(--border);}
+  </style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <span class="logo-icon">🗄️</span>
+    <h1>FileManager</h1>
+    <p>Identity Verification</p>
+  </div>
+
+  <div class="status-box">
+    <div class="user">👤 {{ username }}</div>
+    <div class="email">
+      <span>✉️</span>
+      <span>Code sent to <strong>{{ email_hint }}</strong></span>
+    </div>
+  </div>
+
+  {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}{% for cat,msg in messages %}
+      <div class="alert alert-{{cat}}">
+        <span>{% if cat=='error' %}⚠️{% else %}✓{% endif %}</span>
+        <span>{{msg}}</span>
+      </div>
+    {% endfor %}{% endif %}
+  {% endwith %}
+
+  <form method="POST" action="{{ url_for('verify_otp') }}" id="otpForm">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="form-group">
+      <label for="code">OTP Code (6 Digits)</label>
+      <input type="text" id="code" name="code" required autofocus
+             autocomplete="one-time-code" placeholder="000000"
+             maxlength="6" pattern="[0-9]{6}" inputmode="numeric">
+    </div>
+    <button type="submit" class="btn btn-primary" id="verifyBtn">
+      <span class="spinner" id="spinner"></span>
+      <span id="btnText">🔓 Verify &amp; Sign In</span>
+    </button>
+  </form>
+
+  <div class="divider">or</div>
+
+  <a href="{{ url_for('resend_otp') }}" class="btn btn-secondary">
+    🔄 Resend Code
+  </a>
+
+  <div class="footer-note">
+    Code is valid for <strong>5 minutes</strong><br>
+    Didn't receive it? Check your spam/junk folder
+  </div>
+</div>
+
+<script>
+  const codeInput = document.getElementById('code');
+  codeInput.addEventListener('input', function() {
+    this.value = this.value.replace(/[^0-9]/g, '');
+    if (this.value.length === 6) {
+      setTimeout(() => document.getElementById('otpForm').dispatchEvent(new Event('submit')), 300);
+    }
+  });
+  document.getElementById('otpForm').addEventListener('submit', function() {
+    document.getElementById('spinner').style.display = 'block';
+    document.getElementById('btnText').textContent   = 'Verifying...';
+    document.getElementById('verifyBtn').disabled    = true;
+  });
+</script>
+</body>
+</html>
